@@ -1,0 +1,96 @@
+<div style="text-align:center; padding: 20px;">
+  <h1 class="text-orange-400 text-2xl font-bold my-6">Formulario para calculo de elementos</h1>
+  
+
+  <form [formGroup]="form" class="flex flex-col sm:flex-row justify-between gap-5 sm:gap-10 p-5">
+    <div class="mb-5 w-full sm:w-auto">
+      <label for="pesoMaximo" class="block mb-2 text-sm font-medium text-gray-900">Peso Maximo</label>
+      <input type="number" id="pesoMaximo" formControlName="pesoMaximo"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        placeholder="100" required />
+    </div>
+    
+    <div class="mb-5 w-full sm:w-auto">
+      <label for="caloriasMinimas" class="block mb-2 text-sm font-medium text-gray-900">Calorias Minimas</label>
+      <input type="number" id="caloriasMinimas" formControlName="caloriasMinimas"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        placeholder="500" required />
+    </div>
+    
+    <button type="button" (click)="openDialog()" class="bg-green-500 hover:bg-green-600 p-2 text-white rounded-lg w-full sm:w-auto" [disabled]="elementosOptimos.length>0">
+      Agregar Elementos
+    </button>
+  </form>
+  
+
+
+
+  <div class="relative overflow-x-auto my-6">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+      <thead class="text-xs text-black uppercase bg-orange-400 font-bold">
+        <tr>
+          <th scope="col" class="px-6 py-3">
+            Nombre
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Peso
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Calorias
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Eliminar
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of datosExcursionista.elementos; track item.nombre; let index = $index) {
+        <tr class="bg-white border-b text-black border-gray-200">
+          <th class="px-6 py-4">
+            {{item.nombre}}
+          </th>
+          <td class="px-6 py-4">
+            {{item.peso}}
+          </td>
+          <td class="px-6 py-4">
+            {{item.calorias}}
+          </td>
+          <td class="px-6 py-4">
+            <button class="h-5 w-5" (click)="elimiarElemento(index)">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                <path fill="#db5800"
+                  d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
+              </svg>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  
+  
+
+  @if (elementosOptimos.length > 0) {
+    
+    <h2 class="text-orange-400 text-xl font-bold mt-8 mb-2">Elementos Optimos</h2>
+    <p class="mb-2">A continuación, se mostrarán los elementos óptimos.</p>
+    @for (item of elementosOptimos; track $index) {
+      <code class="mb-3">{{item | json}}</code>
+      <br>
+    }
+    
+    
+    <button type="button" (click)="limpiarFormulario()" class="bg-green-500 hover:bg-green-600 p-2 text-white rounded-lg w-full sm:w-auto mt-4">
+      Limpiar
+    </button>
+  }@else {
+    <button type="button" (click)="calcularElementos()" class="bg-green-500 hover:bg-green-600 p-2 text-white rounded-lg w-full sm:w-auto">
+      Calcular
+    </button>
+  }
+    
+  
+
+</div>
