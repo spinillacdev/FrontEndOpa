@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 export class ExcursionistasComponent {
 
   form: FormGroup;
+  cargando: boolean = false;
 
   datosExcursionista: DatosExcursionistas = {
     pesoMaximo: 0,
@@ -52,15 +53,18 @@ export class ExcursionistasComponent {
 
   calcularElementos(){
     if (this.form.valid && this.datosExcursionista.elementos.length > 0) {
+      this.cargando = true;
       this.datosExcursionista.pesoMaximo = this.form.value.pesoMaximo;
       this.datosExcursionista.caloriasMinimas = this.form.value.caloriasMinimas;
 
       this.excursionistaService.agregarExcursionista(this.datosExcursionista).subscribe({
         next: (result) => {
           this.elementosOptimos = result
+          this.cargando = false;
         },
         error: (error) => {
-          console.log(error)
+          this.cargando = false;
+          alert(error)
         }
       })
     } else {
@@ -76,5 +80,19 @@ export class ExcursionistasComponent {
       elementos: []
     }
     this.form.reset;
+  }
+
+  obtenerTotales() {
+    let totales = {
+      pesoTotal: 0,
+      caloriasTotal: 0
+    }
+
+    this.elementosOptimos.forEach(item => {
+      totales.pesoTotal += item.peso;
+      totales.caloriasTotal += item.calorias
+    });
+
+    return totales;
   }
 }
